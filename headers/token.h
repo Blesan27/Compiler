@@ -10,7 +10,7 @@
 #define TIMES       4           // *
 #define LP          5           // (
 #define RP          6           // )
-#define NUM_OR_ID   7           // var or number
+#define IDENTIFIER  7           // variable name
 #define LESS        8           // <
 #define GREATOR     9           // >
 #define COLON       10          // :
@@ -28,6 +28,11 @@
 #define L_EQUAL     22          // <= 
 #define G_EQUAL     23          // >=  
 
+#define NUMBER      24          // number
+#define KEYWORD     25          // keyword
+
+///////////////////////////////////////////////////////////////
+
 FILE *fPtr = NULL;
 char *tokenValue; 
 int tokenLength;
@@ -35,8 +40,13 @@ int tokenLine = 1;
 int def = 0;
 char c;
 
-int isDelimeter(char c);
+char *keywords[] = {"work","int", "char", "return"};
+int TOTAL_KEYWORDS = 4;
 
+////////////////////////////////////////////////////////////////
+
+int isDelimeter(char c);
+int isNumber_Keyword_Identifier();
 void init_token(char* filePath){
     fPtr = fopen(filePath, "r");
     printf("TOKEN INITIALIZED %d\n",fPtr);
@@ -210,7 +220,7 @@ int nextToken(){
                     variable[vl] = '\0';
                     tokenValue = malloc(tokenLength*sizeof(char));
                     strcpy(tokenValue,variable);
-                    return NUM_OR_ID;
+                    return isNumber_Keyword_Identifier();
                 }else{
                     fprintf(stderr,"Error while parsing %c at line no:%d\n",c,tokenLine);
                     return EOI;
@@ -219,6 +229,28 @@ int nextToken(){
         }
     }
     return 0;
+}
+
+int isNumber_Keyword_Identifier(){
+    int isNumber = 1;
+    int i=0;
+    for(i=0; i<tokenLength; i++){
+        char c = *(tokenValue+i);
+        if( c < '0' || c > '9' ){
+            isNumber = 0;
+            break;
+        }
+    }
+    if(isNumber)return NUMBER;
+
+    for(i=0; i<TOTAL_KEYWORDS ; i++){
+        if(strcmp(tokenValue,keywords[i]) == 0){
+            return KEYWORD;
+        }
+    }
+
+    return IDENTIFIER;
+
 }
 
 int isDelimeter(char c){

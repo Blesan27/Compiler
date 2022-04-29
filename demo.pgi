@@ -1,0 +1,10 @@
+#Comment here
+work:int
+    show(char c){
+        print("Parameter Passed");
+        print(c);
+        return 1;
+    }
+
+
+show();

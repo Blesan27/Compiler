@@ -4,7 +4,7 @@
 #include <string.h>
 
 int main(){
-    init_token("example.pgi");
+    init_token("demo.pgi");
     int tokenID = nextToken();
     printf("STARTED\n");
     while(tokenID!=EOI){
