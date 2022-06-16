@@ -1,8 +1,10 @@
 #ifndef TOKEN_H
+#define TOKEN_H
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#define TOKEN_H
+#include <stdio.h>
 #define EOI         0           // End Of File
 #define SEMI        1           // ;
 #define PLUS        2           // +
@@ -30,6 +32,7 @@
 
 #define NUMBER      24          // number
 #define KEYWORD     25          // keyword
+#define DATATYPE    26          // datatype
 
 ///////////////////////////////////////////////////////////////
 
@@ -40,14 +43,19 @@ int tokenLine = 1;
 int def = 0;
 char c;
 
-char *keywords[] = {"work","int", "char", "return"};
-int TOTAL_KEYWORDS = 4;
+char *keywords[] = {"work", "return","function"};
+int TOTAL_KEYWORDS = 3;
+
+char *datatypes[] = {"int", "char","string"};
+int TOTAL_DATATYPES = 3;
+
 
 ////////////////////////////////////////////////////////////////
 
 int isDelimeter(char c);
 int isNumber_Keyword_Identifier();
 void init_token(char* filePath){
+    printf("OPENING FILE \n");
     fPtr = fopen(filePath, "r");
     printf("TOKEN INITIALIZED %d\n",fPtr);
 }
@@ -65,127 +73,127 @@ int nextToken(){
         switch(c){
             case '+':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"+");
                 return PLUS;
                 break;
             case '-':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"-");
                 return MINUS;
                 break;
             case '*':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"*");
                 return TIMES;
                 break;
             case '/':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"/");
                 return B_SLASH;
                 break;
             case '\\':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"\\");
                 return F_SLASH;
                 break;
             case '.':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,".");
                 return DOT;
                 break;
             case '(':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"(");
                 return LP;
                 break;
             case ')':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,")");
                 return RP;
                 break;
             case '{':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"{");
                 return L_FLOWER;
                 break;
             case '}':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"}");
                 return R_FLOWER;
                 break;
             case '=':
                 if((c=fgetc(fPtr)) == '='){
                     tokenLength = 2;
-                    tokenValue = malloc(3*sizeof(char));
+                    tokenValue = (char *)malloc(3*sizeof(char));
                     strcpy(tokenValue,"==");
                     return EQUALITY;
                 }else def = 1;
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"=");
                 return EQUAL;
                 break;
             case '<':
                 if((c=fgetc(fPtr)) == '='){
                     tokenLength = 2;
-                    tokenValue = malloc(3*sizeof(char));
+                    tokenValue = (char *)malloc(3*sizeof(char));
                     strcpy(tokenValue,"<=");
                     return L_EQUAL;
                 }else def = 1;
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"<");
                 return LESS;
                 break;
             case '>':
                 if((c=fgetc(fPtr)) == '='){
                     tokenLength = 2;
-                    tokenValue = malloc(3*sizeof(char));
+                    tokenValue = (char *)malloc(3*sizeof(char));
                     strcpy(tokenValue,">=");
                     return G_EQUAL;
                 }else def = 1;
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,">");
                 return GREATOR;
                 break;
             case '\'':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"'");
                 return QOUTE;
                 break;
             case '"':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"\"");
                 return D_QOUTE;
                 break;
             case ':':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,":");
                 return COLON;
                 break;
             case ';':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,";");
                 return SEMI;
                 break;
             case ',':
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,",");
                 return COMMA;
                 break;
@@ -196,7 +204,7 @@ int nextToken(){
                 break;
             case EOF:
                 tokenLength = 1;
-                tokenValue = malloc(2*sizeof(char));
+                tokenValue = (char *)malloc(2*sizeof(char));
                 strcpy(tokenValue,"NONE");
                 return EOI;
                 break;
@@ -218,7 +226,7 @@ int nextToken(){
                         tokenLength++;
                     }
                     variable[vl] = '\0';
-                    tokenValue = malloc(tokenLength*sizeof(char));
+                    tokenValue = (char *)malloc(tokenLength*sizeof(char));
                     strcpy(tokenValue,variable);
                     return isNumber_Keyword_Identifier();
                 }else{
@@ -246,6 +254,12 @@ int isNumber_Keyword_Identifier(){
     for(i=0; i<TOTAL_KEYWORDS ; i++){
         if(strcmp(tokenValue,keywords[i]) == 0){
             return KEYWORD;
+        }
+    }
+
+    for(i=0; i<TOTAL_DATATYPES ; i++){
+        if(strcmp(tokenValue,datatypes[i]) == 0){
+            return DATATYPE;
         }
     }
 

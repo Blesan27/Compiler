@@ -1,0 +1,11 @@
+string a;
+a = "implementation";
+
+string b;
+b = "review";
+
+int c ;
+
+c = 20;
+
+print();

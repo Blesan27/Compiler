@@ -7,4 +7,9 @@ work:int
     }
 
 
-show();
+show(20);
+
+
+#EXPECTED OUTPUT
+#Parameter Passed
+#20

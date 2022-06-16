@@ -19,7 +19,7 @@ value()returns string{
 }
 } Profile;
 
-#program starts here
+program starts here
 START_PROGRAM:
 int var = 10;
 print(checkAge(var));
@@ -29,3 +29,7 @@ print(myprofile);
 
 
 #create is not needed for int,char,boolean,number;
+
+#EXPECTED OUTPUT
+#FALSE
+#NAME 1
